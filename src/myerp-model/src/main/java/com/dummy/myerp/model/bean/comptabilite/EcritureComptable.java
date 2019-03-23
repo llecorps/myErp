@@ -112,7 +112,7 @@ public class EcritureComptable {
      */
     public boolean isEquilibree() {
         boolean vRetour = this.getTotalDebit().equals(getTotalCredit());
-        System.out.println("vRteour est:"+vRetour);
+        System.out.println("vRetour est:"+vRetour);
         return vRetour;
     }
 
