@@ -1,10 +1,10 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
-import java.math.BigDecimal;
-
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 
 public class EcritureComptableTest {
@@ -41,4 +41,44 @@ public class EcritureComptableTest {
         Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
     }
 
+
+    @Test
+    public void getTotalDebit() {
+
+        EcritureComptable vEcriture = new EcritureComptable();
+
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "200", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "100", "33"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
+
+        BigDecimal vRetour = BigDecimal.ZERO;
+
+        for (LigneEcritureComptable vLigneEcritureComptable : vEcriture.getListLigneEcriture()) {
+            if (vLigneEcritureComptable.getDebit() != null) {
+                vRetour = vRetour.add(vLigneEcritureComptable.getDebit());
+            }
+        }
+        Assert.assertEquals(vEcriture.getTotalDebit(), vRetour);
+    }
+
+    @Test
+    public void getTotalCredit() {
+
+        EcritureComptable vEcriture = new EcritureComptable();
+
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "200.50", "400"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "30"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "31"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "70"));
+
+        BigDecimal vRetour = BigDecimal.ZERO;
+
+        for (LigneEcritureComptable vLigneEcritureComptable : vEcriture.getListLigneEcriture()) {
+            if (vLigneEcritureComptable.getCredit() != null) {
+                vRetour = vRetour.add(vLigneEcritureComptable.getCredit());
+            }
+        }
+        Assert.assertEquals(vEcriture.getTotalCredit(), vRetour);
+    }
 }
