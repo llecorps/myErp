@@ -6,6 +6,7 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.testbusiness.business.BusinessTestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 
-public class ComptabiliteManagerImplTest {
+public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
     private static ComptabiliteDaoImpl dao;

@@ -17,4 +17,6 @@
     <bean id="txManagerMYERP" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSourceMYERP"/>
     </bean>
+
+    <import resource="classpath:/com.dummy.myerp.testbusiness/testbusinessContext.xml"/>
 </beans>
