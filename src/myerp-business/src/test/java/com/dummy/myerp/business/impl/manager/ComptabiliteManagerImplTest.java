@@ -118,7 +118,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
         //});
     }
 
-
+    @Test
     public void checkEcritureComptable() throws Exception {
 
         EcritureComptable vEcritureComptable;

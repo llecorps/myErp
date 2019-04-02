@@ -12,9 +12,9 @@
 
     <!-- ==================== Datasource ==================== -->
     <bean id="dataSourceMYERP" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${myerp.datasource.driver}"/>
-        <property name="url" value="${myerp.datasource.url}"/>
-        <property name="username" value="${myerp.datasource.username}"/>
-        <property name="password" value="${myerp.datasource.password}"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://ec2-52-205-104-6.compute-1.amazonaws.com:5432/db_myerp"/>
+        <property name="username" value="usr_myerp"/>
+        <property name="password" value="myerp"/>
     </bean>
 </beans>
