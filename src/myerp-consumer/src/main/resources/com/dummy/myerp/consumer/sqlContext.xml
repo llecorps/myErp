@@ -89,6 +89,22 @@
                 WHERE ecriture_id = :ecriture_id
             </value>
         </property>
+        <property name="SQLgetSequenceEcritueComptable">
+            <value>
+                SELECT * FROM myerp.sequence_ecriture_comptable
+                WHERE journal_code = :journal_code AND annee = :annee
+            </value>
+        </property>
+        <property name="SQLinsertSequenceEcritureComptable">
+            <value>
+                INSERT INTO myerp.sequence_ecriture_comptable (journal_code, annee, derniere_valeur)
+                VALUES (:journal_code, :annee, :derniere_valeur)
+                ON CONFLICT (journal_code, annee)
+                DO UPDATE SET derniere_valeur = :derniere_valeur
+                WHERE myerp.sequence_ecriture_comptable.journal_code = :journal_code
+                AND myerp.sequence_ecriture_comptable.annee = :annee
+            </value>
+        </property>
     </bean>
 
 </beans>

@@ -11,6 +11,8 @@ public class SequenceEcritureComptable {
     private Integer annee;
     /** La dernière valeur utilisée */
     private Integer derniereValeur;
+    /**  code journal */
+    private String codeJournal;
 
     // ==================== Constructeurs ====================
     /**
@@ -45,6 +47,13 @@ public class SequenceEcritureComptable {
         derniereValeur = pDerniereValeur;
     }
 
+    public String getCodeJournal() {
+        return codeJournal;
+    }
+
+    public void setCodeJournal(String codeJournal) {
+        this.codeJournal = codeJournal;
+    }
 
     // ==================== Méthodes ====================
     @Override
