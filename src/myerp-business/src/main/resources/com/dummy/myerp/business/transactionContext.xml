@@ -19,5 +19,5 @@
     </bean>
 
 
-    <import resource="classpath:/testbusinessContext.xml"/>
+
 </beans>
