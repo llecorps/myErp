@@ -6,5 +6,6 @@
 
     <import resource="classpath:/com/dummy/myerp/business/businessContext.xml"/>
     <import resource="classpath:/com/dummy/myerp/consumer/applicationContext.xml"/>
+    <import resource="classpath:/com/dummy/myerp/business/testbusinessContext.xml"/>
 
 </beans>
