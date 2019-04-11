@@ -1,10 +1,7 @@
 package com.dummy.myerp.consumer.dao.impl.db.dao;
 
 import com.dummy.myerp.consumer.dao.contrat.ComptabiliteDao;
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.testconsumer.consumer.ConsumerTestCase;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,21 +21,23 @@ public class ComptabiliteDaoImplTest extends ConsumerTestCase {
 
     private ComptabiliteDao dao = getDaoProxy().getComptabiliteDao();
     private EcritureComptable vEcritureComptable = new EcritureComptable();
+    private int dateAnnee;
+
     @Before
     public void init() {
         Date currentDate = new Date();
-        int currentYear = LocalDateTime.ofInstant(currentDate.toInstant(), ZoneId.systemDefault()).toLocalDate().getYear();
-        vEcritureComptable.setJournal(new JournalComptable("OD", "TestInsert"));
-        vEcritureComptable.setReference("TT-2019/00055");
+        dateAnnee = LocalDateTime.ofInstant(currentDate.toInstant(), ZoneId.systemDefault()).toLocalDate().getYear();
+        vEcritureComptable.setJournal(new JournalComptable("OD", "Test_Insert"));
+        vEcritureComptable.setReference("LL-2019/00077");
         vEcritureComptable.setDate(currentDate);
-        vEcritureComptable.setLibelle("Test");
+        vEcritureComptable.setLibelle("Test_Ecriture");
 
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                "Test1", new BigDecimal(200),new BigDecimal(100)));
+                "Line1", new BigDecimal(200),new BigDecimal(100)));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),
-                "Test2", new BigDecimal(150),new BigDecimal(100)));
+                "Line2", new BigDecimal(150),new BigDecimal(100)));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(512),
-                "Test3", new BigDecimal(100),new BigDecimal(250)));
+                "Line3", new BigDecimal(100),new BigDecimal(250)));
     }
     @Test
     public void getListCompteComptable() throws Exception {
@@ -62,29 +61,11 @@ public class ComptabiliteDaoImplTest extends ConsumerTestCase {
         Assert.assertTrue(vList.size() >= 1);
     }
 
-    @Test
-    public void setSQLgetListEcritureComptable() throws Exception {
-
-    }
-
-    @Test
-    public void setSQLgetEcritureComptable() throws Exception {
-
-    }
 
     @Test
     public void getEcritureComptable() throws Exception {
 
         EcritureComptable vEcritureComptable = dao.getEcritureComptable(-2);
-        Assert.assertNotNull(vEcritureComptable);
-    }
-
-
-
-    @Test
-    public void setSQLgetEcritureComptableByRef() throws Exception {
-
-        EcritureComptable vEcritureComptable = dao.getEcritureComptableByRef("VE-2016/00002");
         Assert.assertNotNull(vEcritureComptable);
     }
     @Test
@@ -95,63 +76,62 @@ public class ComptabiliteDaoImplTest extends ConsumerTestCase {
     }
 
     @Test
-    public void setSQLloadListLigneEcriture() throws Exception {
-
-    }
-
-    @Test
     public void loadListLigneEcriture() throws Exception {
-
+        EcritureComptable vEcriture  = new EcritureComptable();
+        vEcriture.setId(-1);
+        dao.loadListLigneEcriture(vEcriture);
+        Assert.assertEquals(3, vEcriture.getListLigneEcriture().size());
     }
 
-    @Test
-    public void setSQLinsertEcritureComptable() throws Exception {
-
-    }
 
     @Test
     public void insertEcritureComptable() throws Exception {
+        dao.insertEcritureComptable(vEcritureComptable);
+
+        EcritureComptable pEcritureComptable = dao.getEcritureComptableByRef("LL-" + dateAnnee + "/00077");
+
+        dao.deleteEcritureComptable(pEcritureComptable.getId());
+        Assert.assertEquals(vEcritureComptable.getReference(), pEcritureComptable.getReference());
+        Assert.assertEquals(vEcritureComptable.getLibelle(), pEcritureComptable.getLibelle());
 
     }
 
-    @Test
-    public void setSQLinsertListLigneEcritureComptable() throws Exception {
 
-    }
 
-    @Test
-    public void insertListLigneEcritureComptable() throws Exception {
 
-    }
-
-    @Test
-    public void setSQLupdateEcritureComptable() throws Exception {
-
-    }
 
     @Test
     public void updateEcritureComptable() throws Exception {
 
+        vEcritureComptable.setReference("LL-2019/0022");
+        dao.insertEcritureComptable(vEcritureComptable);
+        EcritureComptable ecriture = dao.getEcritureComptableByRef("LL-2019/0022");
+        ecriture.setLibelle("update");
+        dao.updateEcritureComptable(ecriture);
+        Assert.assertEquals("update", ecriture.getLibelle());
+        dao.deleteEcritureComptable(ecriture.getId());
+
     }
 
-    @Test
-    public void setSQLdeleteEcritureComptable() throws Exception {
-
-    }
 
     @Test
     public void deleteEcritureComptable() throws Exception {
 
+        Date currentDate = new Date();
+        dateAnnee = LocalDateTime.ofInstant(currentDate.toInstant(), ZoneId.systemDefault()).toLocalDate().getYear();
+        vEcritureComptable.setJournal(new JournalComptable("OD", "Remove"));
+        vEcritureComptable.setReference("OD-2019/00044");
+        vEcritureComptable.setDate(currentDate);
+        vEcritureComptable.setLibelle("Remove");
+
+        dao.insertEcritureComptable(vEcritureComptable);
+
+        EcritureComptable bis = dao.getEcritureComptableByRef("OD-2019/00044");
+        Assert.assertNotNull(bis);
+        dao.deleteEcritureComptable(bis.getId());
+
     }
 
-    @Test
-    public void setSQLdeleteListLigneEcritureComptable() throws Exception {
 
-    }
-
-    @Test
-    public void deleteListLigneEcritureComptable() throws Exception {
-
-    }
 
 }
