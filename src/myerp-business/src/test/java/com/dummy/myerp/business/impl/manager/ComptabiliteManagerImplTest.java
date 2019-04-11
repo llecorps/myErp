@@ -92,22 +92,23 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     }
 
 
+    @Test
     public void addReference() throws Exception {
         EcritureComptable vEcritureComptable = new EcritureComptable();
 
-        //vEcritureComptable.setId(-1);
+        vEcritureComptable.setId(-1);
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new SimpleDateFormat("yyyy/MM/dd").parse("2018/12/31"));
-        vEcritureComptable.setLibelle("Papier");
+        vEcritureComptable.setDate(new SimpleDateFormat("yyyy/MM/dd").parse("2016/12/31"));
+        vEcritureComptable.setLibelle("Cartouches d’imprimante");
 
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
-                "Papier", new BigDecimal(43),
+                "Cartouches d’imprimante", new BigDecimal(43),
                 null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(4456),
                 "TVA 20%", new BigDecimal(8),
                 null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                "Facture F190001", null,
+                "Facture F110001", null,
                 new BigDecimal(51)));
 
         manager.addReference(vEcritureComptable);
