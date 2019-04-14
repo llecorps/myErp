@@ -183,4 +183,13 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
         manager.checkEcritureEquilibre(vEcritureComptable);
     }
+
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG3Violation() throws Exception {
+        EcritureComptable v = new EcritureComptable();
+        v.setJournal(new JournalComptable("AC", "Achat"));
+        v.setDate(new Date());
+        v.setLibelle("Libelle");
+        manager.checkNumLigneEcriture(v);
+    }
 }
