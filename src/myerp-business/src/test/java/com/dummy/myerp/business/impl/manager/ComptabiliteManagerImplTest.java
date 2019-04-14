@@ -31,6 +31,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     @Before
     public void init() {
         EcritureComptable vEcritureComptable = new EcritureComptable();
+
     }
 
 
@@ -157,5 +158,29 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),
                 null, null,
                 new BigDecimal(123)));
+    }
+
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG2Violation() throws Exception {
+
+        EcritureComptable vEcritureComptable;
+        vEcritureComptable = new EcritureComptable();
+
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.setReference("AC-2019/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),
+                null, null,
+                new BigDecimal(123)));
+
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+
+        manager.checkEcritureEquilibre(vEcritureComptable);
     }
 }
