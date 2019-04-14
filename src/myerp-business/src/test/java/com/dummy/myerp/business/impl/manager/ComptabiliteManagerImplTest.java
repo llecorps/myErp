@@ -92,6 +92,17 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
+    @Test
+    public void checkEcritureComptableContext() throws FunctionalException {
+        EcritureComptable vEcritureComptable;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.setReference("AC-2019/00001");
+        manager.checkReference(vEcritureComptable);
+    }
+
 
     @Test
     public void addReference() throws Exception {
