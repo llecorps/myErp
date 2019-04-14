@@ -7,6 +7,7 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.testbusiness.business.BusinessTestCase;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+
+import static com.dummy.myerp.consumer.ConsumerHelper.getDaoProxy;
 
 
 public class ComptabiliteManagerImplTest extends BusinessTestCase {
@@ -103,6 +107,34 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
         manager.checkReference(vEcritureComptable);
     }
 
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableContextViolation() throws FunctionalException {
+        EcritureComptable vEcritureComptable;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.setReference("AC-2010/00001");
+        manager.checkReference(vEcritureComptable);
+    }
+
+    @Test
+    public void getListCompteComptable() {
+        List<CompteComptable> pList = getDaoProxy().getComptabiliteDao().getListCompteComptable();
+        Assert.assertTrue(pList.size() >= 1);
+    }
+
+    @Test
+    public void getListJournalComptable() {
+        List<CompteComptable> pList = getDaoProxy().getComptabiliteDao().getListCompteComptable();
+        Assert.assertTrue(pList.size() >= 1);
+    }
+
+    @Test
+    public void getListEcritureComptable() {
+        List<EcritureComptable> pList = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
+        Assert.assertTrue(pList.size() >= 1);
+    }
 
     @Test
     public void addReference() throws Exception {
