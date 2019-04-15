@@ -280,4 +280,5 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
         manager.deleteEcritureComptable(eb.getId());
     }
 
+
 }
