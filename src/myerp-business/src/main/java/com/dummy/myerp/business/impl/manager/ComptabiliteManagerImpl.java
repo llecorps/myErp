@@ -308,4 +308,5 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             throw new FunctionalException("L'année de la référence est différente de l'année d'écriture.");
     }
 
+
 }
