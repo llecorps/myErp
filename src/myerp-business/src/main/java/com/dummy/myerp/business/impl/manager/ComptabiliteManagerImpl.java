@@ -58,7 +58,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     /**
      * {@inheritDoc}
      */
-    // TODO à tester
+    // DONE à tester
     @Override
     public synchronized void addReference(EcritureComptable pEcritureComptable) throws NotFoundException, FunctionalException {
         // TODONE à implémenter
@@ -260,4 +260,53 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }
 
     }
+    public void checkEcritureEquilibre(EcritureComptable pEcritureComptable) throws FunctionalException {
+        // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
+        if (!pEcritureComptable.isEquilibree()) {
+            throw new FunctionalException("L'écriture comptable n'est pas équilibrée.");
+        }
+    }
+
+    public void checkNumLigneEcriture(EcritureComptable pEcritureComptable) throws FunctionalException {
+        // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
+        int vNbrCredit = 0;
+        int vNbrDebit = 0;
+        for (LigneEcritureComptable vLigneEcritureComptable : pEcritureComptable.getListLigneEcriture()) {
+            if (BigDecimal.ZERO.compareTo(ObjectUtils.defaultIfNull(vLigneEcritureComptable.getCredit(),
+                    BigDecimal.ZERO)) != 0) {
+                vNbrCredit++;
+            }
+            if (BigDecimal.ZERO.compareTo(ObjectUtils.defaultIfNull(vLigneEcritureComptable.getDebit(),
+                    BigDecimal.ZERO)) != 0) {
+                vNbrDebit++;
+            }
+        }
+        // On test le nombre de lignes car si l'écriture à une seule ligne
+        //      avec un montant au débit et un montant au crédit ce n'est pas valable
+        if (pEcritureComptable.getListLigneEcriture().size() < 2
+                || vNbrCredit < 1
+                || vNbrDebit < 1) {
+            throw new FunctionalException(
+                    "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
+        }
+    }
+    public void checkReference(EcritureComptable pEcritureComptable) throws FunctionalException {
+        // TODO ===== RG_Compta_5 : Format et contenu de la référence
+        // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+        String[] parts = pEcritureComptable.getReference().split("\\p{Punct}");
+        String codeJournal = parts[0];
+        String date = parts[1];
+
+        if(!codeJournal.equals(pEcritureComptable.getJournal().getCode()))
+            throw new FunctionalException("Le code journal de la référence est différent du code journal.");
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(pEcritureComptable.getDate());
+        String annee = Integer.toString(cal.get(Calendar.YEAR));
+
+        if(!date.equals(annee))
+            throw new FunctionalException("L'année de la référence est différente de l'année d'écriture.");
+    }
+
+
 }

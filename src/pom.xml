@@ -383,6 +383,29 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>1.10</version>
                 </plugin>
+
+                <!-- ===== code cov ===== -->
+                <plugin>
+                    <groupId>org.eluder.coveralls</groupId>
+                    <artifactId>coveralls-maven-plugin</artifactId>
+                    <configuration>
+                        <repoToken>TpOLzUt3gTpY4pIZuojoI6XWdT0ZUSVot</repoToken>
+                    </configuration>
+                    <version>4.3.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.7</version>
+                    <configuration>
+                        <format>xml</format>
+                        <maxmem>256m</maxmem>
+                        <aggregate>true</aggregate>
+                    </configuration>
+                </plugin>
+
+
             </plugins>
         </pluginManagement>
     </build>
