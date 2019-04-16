@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static org.junit.Assert.assertTrue;
+
 
 public class EcritureComptableTest {
 
@@ -29,7 +31,7 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-        Assert.assertTrue(vEcriture.toString(), vEcriture.isEquilibree());
+        assertTrue(vEcriture.toString(), vEcriture.isEquilibree());
 
         vEcriture.getListLigneEcriture().clear();
         vEcriture.setLibelle("Non équilibrée");
@@ -78,5 +80,25 @@ public class EcritureComptableTest {
             }
         }
         Assert.assertEquals(vEcriture.getTotalCredit(), vRetour);
+    }
+
+    @Test
+    public void getReference() {
+
+        EcritureComptable vEcriture = new EcritureComptable();
+        vEcriture.setReference("BQ-2016/00003");
+        assertTrue("The reference doesn't matches with the pattern \"XX-AAAA/#####\"", vEcriture.getReference().matches("[A-Z]{1,5}-\\d{4}/\\d{5}"));
+    }
+
+
+    @Test
+    public void referenceCodeEqualJournalCode() {
+
+        EcritureComptable vEcriture = new EcritureComptable();
+        vEcriture.setJournal(new JournalComptable("BQ", "Banque"));
+        vEcriture.setReference("BQ-2016/00003");
+        assertTrue(
+                vEcriture.toString(),
+                vEcriture.getReference().substring(0, 2).equals(vEcriture.getJournal().getCode()));
     }
 }
